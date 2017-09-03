@@ -1,2 +1,2 @@
-# reactjs-07
-ReactJS #07 - Todo List App
+# reactjs-08
+ReactJS #08 - Todo List App
