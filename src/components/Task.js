@@ -1,52 +1,27 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
+import { connect } from 'react-redux'
 import './Task.css'
 
-class Task extends Component {
-  static contextTypes = {
-    store: PropTypes.object
-  }
-
+class Task extends React.Component {
   toggleTaskState = event => {
     event.preventDefault()
-    this.context.store.dispatch({
-      type: 'TOGGLE_TASK',
-      key: this.props.index
-    })
-  }
-
-  deleteTask = () => {
-    this.context.store.dispatch({
-      type: 'DELETE_TASK',
-      key: this.props.index
-    })
+    this.props.toggleTaskState()
   }
 
   updateTaskDescription = () => {
-    const task = this.getCurrentTask()
+    const task = this.props.currentTask
     const text = prompt('Update the task description', task.description)
     if (text != undefined) {
       if (text.length > 0) {
-        this.context.store.dispatch({
-          type: 'UPDATE_TASK_DESCRIPTION',
-          key: this.props.index,
-          description: text
-        })
+        this.props.updateTaskDescription(text)
       } else {
-        this.context.store.dispatch({
-          type: 'DELETE_TASK',
-          key: this.props.index
-        })
+        this.props.deleteTask()
       }
     }
   }
 
-  getCurrentTask = () => {
-    return this.context.store.getState()[this.props.index]
-  }
-
   render() {
-    const task = this.getCurrentTask()
+    const task = this.props.currentTask
     const classes = [task.active ? 'task-active' : 'task-inactive']
     return (
       <div className='task'>
@@ -57,11 +32,31 @@ class Task extends Component {
             {task.description}
           </a>
         </span>
-        <button className="btn shadow fa fa-trash" aria-hidden="true" title="Remove task" onClick={this.deleteTask}></button>
+        <button className="btn shadow fa fa-trash" aria-hidden="true" title="Remove task" onClick={this.props.deleteTask}></button>
         <button className="btn shadow fa fa-pencil" aria-hidden="true" title="Update task" onClick={this.updateTaskDescription}></button>
       </div>
     )
   }
 }
 
-export default Task
+const mapStateToProps = (state, ownProps) => ({
+  currentTask: state[ownProps.index]
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  updateTaskDescription: description => dispatch({
+    type: 'UPDATE_TASK_DESCRIPTION',
+    key: ownProps.index,
+    description
+  }),
+  deleteTask: () => dispatch({
+    type: 'DELETE_TASK',
+    key: ownProps.index
+  }),
+  toggleTaskState: () => dispatch({
+    type: 'TOGGLE_TASK',
+    key: ownProps.index
+  })
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Task)

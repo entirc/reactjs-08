@@ -1,8 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import Sortable from 'react-sortablejs'
 
-const SortableList = ({ children }) =>
+const SortableList = ({ tasks, loadTasks, children }) =>
   <Sortable
     className="todo-list-items"
     options={{
@@ -10,22 +10,25 @@ const SortableList = ({ children }) =>
     }}
     tag="ul"
     onChange={(orderedKeys, sortable, evt) => {
-      const store = this.context.store
-      const tasks = { ...store.getState() }
+      const orderedTasks = { ...tasks }
       orderedKeys
         .reverse() //we need to reverse it because the list is in descending order (see TodoItems.render() method)
-        .forEach((key, i) => tasks[key].order = i)
-      store.dispatch({
-        type: 'LOAD_TASKS',
-        tasks
-      })
+        .forEach((key, i) => orderedTasks[key].order = i)
+      loadTasks(orderedTasks)
     }}
     >
     {children}
   </Sortable>
 
-SortableList.contextTypes = {
-  store: PropTypes.object
-}
+const mapStateToProps = state => ({
+  tasks: state
+})
 
-export default SortableList
+const mapDispatchToProps = dispatch => ({
+  loadTasks: tasks => dispatch({
+    type: 'LOAD_TASKS',
+    tasks
+  })
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SortableList)

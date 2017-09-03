@@ -1,28 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import './AddTodo.css'
 
 class AddTodo extends React.Component {
-  static contextTypes = {
-    store: PropTypes.object
-  }
-
   addTask = event => {
     event.preventDefault()
     if (this.taskInput.value.length > 0) {
-      this.context.store.dispatch({
-        type: 'ADD_TASK',
-        description: this.taskInput.value.trim()
-      })
+      this.props.addTask(this.taskInput.value.trim())
     }
     this.taskInput.value = ''
     this.taskInput.focus()
-  }
-
-  removeAllTasks = () => {
-    this.context.store.dispatch({
-      type: 'REMOVE_ALL_TASKS'
-    })
   }
 
   render() {
@@ -45,7 +32,7 @@ class AddTodo extends React.Component {
             className="btn shadow fa fa-recycle"
             aria-hidden="true"
             title="Remove all tasks"
-            onClick={this.removeAllTasks}
+            onClick={this.props.removeAllTasks}
           />
         </form>
       </div>
@@ -53,4 +40,14 @@ class AddTodo extends React.Component {
   }
 }
 
-export default AddTodo
+const mapDispatchToProps = dispatch => ({
+  addTask: description => dispatch({
+    type: 'ADD_TASK',
+    description
+  }),
+  removeAllTasks: () => dispatch({
+    type: 'REMOVE_ALL_TASKS'
+  })
+})
+
+export default connect(null, mapDispatchToProps)(AddTodo)
