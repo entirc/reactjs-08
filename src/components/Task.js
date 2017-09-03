@@ -4,7 +4,7 @@ import './Task.css'
 class Task extends Component {
   toggleTaskState = event => {
     event.preventDefault()
-    this.props.toggleTaskState(this.props.index, this.props.task)
+    this.props.toggleTaskState(this.props.index)
   }
 
   deleteTask = () => {

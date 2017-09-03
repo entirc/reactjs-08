@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import TodoApp from './components/TodoApp'
-import './learning-redux'
+import store from './store'
 
 ReactDOM.render(
-  <TodoApp />,
+  <TodoApp store={store}/>,
   document.getElementById('app')
 )

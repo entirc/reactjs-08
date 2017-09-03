@@ -1,78 +1,53 @@
 import React, { Component } from 'react'
-import uuid from 'uuid/v4'
 import AddTodo from './AddTodo'
 import TodoList from './TodoList'
 import './TodoApp.css'
 
 class TodoApp extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      tasks: { }
-    }
-  }
-
   componentWillMount() {
-    const tasks = JSON.parse(localStorage.getItem(`tasks`))
-    if (tasks) {
-      this.setState({ tasks })
-    }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    localStorage.setItem(`tasks`, JSON.stringify(nextState.tasks))
+    this.props.store.subscribe(() => this.forceUpdate())
   }
 
   addTask = description => {
-    if (description.length > 0) {
-      const key = uuid()
-      const task = {
-        order: Object.getOwnPropertyNames(this.state.tasks).length,
-        description,
-        active: true
-      }
-      const tasks = { ...this.state.tasks, [key]: task }
-      this.setState({ tasks })
-    }
+    this.props.store.dispatch({
+      type: 'ADD_TASK',
+      description
+    })
   }
 
   deleteTask = key => {
-    const tasks = { ...this.state.tasks }
-    delete tasks[key]
-
-    //reordering the tasks
-    Object.getOwnPropertyNames(tasks)
-      .sort((leftKey, rightKey) => {
-        const leftTask = tasks[leftKey]
-        const rightTask = tasks[rightKey]
-        return leftTask.order - rightTask.order
-      })
-      .forEach((key, i) => {
-        tasks[key].order = i
-      })
-
-    this.setState({ tasks })
+    this.props.store.dispatch({
+      type: 'DELETE_TASK',
+      key
+    })
   }
 
-  toggleTaskState = (key, task) => {
-    const updatedTask = { ...task, active: !task.active }
-    const tasks = { ...this.state.tasks, [key]: updatedTask }
-    this.setState({ tasks })
+  toggleTaskState = key => {
+    this.props.store.dispatch({
+      type: 'TOGGLE_TASK',
+      key
+    })
   }
 
   updateTaskDescription = (key, description) => {
-    const task = this.state.tasks[key]
-    const updatedTask = { ...task, description }
-    const tasks = { ...this.state.tasks, [key]: updatedTask }
-    this.setState({ tasks })
+    this.props.store.dispatch({
+      type: 'UPDATE_TASK_DESCRIPTION',
+      key,
+      description
+    })
   }
 
-  updateAllTasks = newTasks => {
-    this.setState({ tasks: newTasks })
+  updateAllTasks = tasks => {
+    this.props.store.dispatch({
+      type: 'LOAD_TASKS',
+      tasks
+    })
   }
 
   removeAllTasks = () => {
-    this.setState({ tasks: { } })
+    this.props.store.dispatch({
+      type: 'REMOVE_ALL_TASKS'
+    })
   }
 
   render() {
@@ -83,7 +58,7 @@ class TodoApp extends Component {
           removeAllTasks={this.removeAllTasks}
         />
         <TodoList
-          tasks={this.state.tasks}
+          tasks={this.props.store.getState()}
           deleteTask={this.deleteTask}
           toggleTaskState={this.toggleTaskState}
           updateAllTasks={this.updateAllTasks}
