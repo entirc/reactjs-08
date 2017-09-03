@@ -1,19 +1,26 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import './AddTodo.css'
 
 class AddTodo extends React.Component {
+  static contextTypes = {
+    store: PropTypes.object
+  }
+
   addTask = event => {
     event.preventDefault()
-    this.props.store.dispatch({
-      type: 'ADD_TASK',
-      description: this.taskInput.value.trim()
-    })
+    if (this.taskInput.value.length > 0) {
+      this.context.store.dispatch({
+        type: 'ADD_TASK',
+        description: this.taskInput.value.trim()
+      })
+    }
     this.taskInput.value = ''
     this.taskInput.focus()
   }
 
   removeAllTasks = () => {
-    this.props.store.dispatch({
+    this.context.store.dispatch({
       type: 'REMOVE_ALL_TASKS'
     })
   }

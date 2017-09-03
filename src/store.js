@@ -4,17 +4,15 @@ import uuid from 'uuid/v4'
 const reducer = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_TASK': {
-      if (action.description.length > 0) {
-        const key = uuid()
-        const task = {
-          order: Object.getOwnPropertyNames(state).length,
-          description: action.description,
-          active: true
-        }
-        return {
-          ...state,
-          [key]: task
-        }
+      const key = uuid()
+      const task = {
+        order: Object.getOwnPropertyNames(state).length,
+        description: action.description,
+        active: true
+      }
+      return {
+        ...state,
+        [key]: task
       }
     }
     case 'DELETE_TASK': {

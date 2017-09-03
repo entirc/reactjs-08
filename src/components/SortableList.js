@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Sortable from 'react-sortablejs'
 
-const SortableList = ({ store, children }) =>
+const SortableList = ({ children }) =>
   <Sortable
     className="todo-list-items"
     options={{
@@ -9,6 +10,7 @@ const SortableList = ({ store, children }) =>
     }}
     tag="ul"
     onChange={(orderedKeys, sortable, evt) => {
+      const store = this.context.store
       const tasks = { ...store.getState() }
       orderedKeys
         .reverse() //we need to reverse it because the list is in descending order (see TodoItems.render() method)
@@ -21,5 +23,9 @@ const SortableList = ({ store, children }) =>
     >
     {children}
   </Sortable>
+
+SortableList.contextTypes = {
+  store: PropTypes.object
+}
 
 export default SortableList

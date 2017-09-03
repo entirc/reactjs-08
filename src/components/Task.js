@@ -1,17 +1,22 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import './Task.css'
 
 class Task extends Component {
+  static contextTypes = {
+    store: PropTypes.object
+  }
+
   toggleTaskState = event => {
     event.preventDefault()
-    this.props.store.dispatch({
+    this.context.store.dispatch({
       type: 'TOGGLE_TASK',
       key: this.props.index
     })
   }
 
   deleteTask = () => {
-    this.props.store.dispatch({
+    this.context.store.dispatch({
       type: 'DELETE_TASK',
       key: this.props.index
     })
@@ -22,13 +27,13 @@ class Task extends Component {
     const text = prompt('Update the task description', task.description)
     if (text != undefined) {
       if (text.length > 0) {
-        this.props.store.dispatch({
+        this.context.store.dispatch({
           type: 'UPDATE_TASK_DESCRIPTION',
           key: this.props.index,
           description: text
         })
       } else {
-        this.props.store.dispatch({
+        this.context.store.dispatch({
           type: 'DELETE_TASK',
           key: this.props.index
         })
@@ -37,7 +42,7 @@ class Task extends Component {
   }
 
   getCurrentTask = () => {
-    return this.props.store.getState()[this.props.index]
+    return this.context.store.getState()[this.props.index]
   }
 
   render() {
