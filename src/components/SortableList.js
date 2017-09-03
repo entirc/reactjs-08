@@ -1,7 +1,7 @@
 import React from 'react'
 import Sortable from 'react-sortablejs'
 
-const SortableList = props =>
+const SortableList = ({ store, children }) =>
   <Sortable
     className="todo-list-items"
     options={{
@@ -9,14 +9,17 @@ const SortableList = props =>
     }}
     tag="ul"
     onChange={(orderedKeys, sortable, evt) => {
-      const tasks = { ...props.tasks }
+      const tasks = { ...store.getState() }
       orderedKeys
         .reverse() //we need to reverse it because the list is in descending order (see TodoItems.render() method)
         .forEach((key, i) => tasks[key].order = i)
-      props.updateAllTasks(tasks)
+      store.dispatch({
+        type: 'LOAD_TASKS',
+        tasks
+      })
     }}
     >
-    {props.children}
+    {children}
   </Sortable>
 
 export default SortableList

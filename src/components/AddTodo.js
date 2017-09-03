@@ -4,9 +4,18 @@ import './AddTodo.css'
 class AddTodo extends React.Component {
   addTask = event => {
     event.preventDefault()
-    this.props.addTask(this.taskInput.value.trim())
+    this.props.store.dispatch({
+      type: 'ADD_TASK',
+      description: this.taskInput.value.trim()
+    })
     this.taskInput.value = ''
     this.taskInput.focus()
+  }
+
+  removeAllTasks = () => {
+    this.props.store.dispatch({
+      type: 'REMOVE_ALL_TASKS'
+    })
   }
 
   render() {
@@ -29,7 +38,7 @@ class AddTodo extends React.Component {
             className="btn shadow fa fa-recycle"
             aria-hidden="true"
             title="Remove all tasks"
-            onClick={this.props.removeAllTasks}
+            onClick={this.removeAllTasks}
           />
         </form>
       </div>
