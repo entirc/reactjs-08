@@ -23,3 +23,10 @@ body {
   padding: 10px;
   border-radius: 10px;
 }
+
+.todo-list-main {
+  margin: 0 auto;
+  min-width: 80%;
+  text-align: center;
+  padding-top: 10px;
+}

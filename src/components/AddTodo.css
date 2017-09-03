@@ -1,0 +1,38 @@
+.todo-list-main .header input {
+  font-family: "Operator Mono", "Fira Code", "Monaco", "Inconsolata", sans-serif;
+}
+
+.todo-list-main .header input {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  min-width: 60%;
+  border-radius: 10px;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.todo-list-main .header button {
+  margin: 10px 4px;
+}
+
+.todo-list-main .header button:hover  {
+  background-color: #222;
+  cursor: pointer;
+}
+
+.todo-list-main .header input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  font-style: italic;
+}
+.todo-list-main .header input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  font-style: italic;
+}
+.todo-list-main .header input::-moz-placeholder { /* Mozilla Firefox 19+ */
+  font-style: italic;
+}
+.todo-list-main .header input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  font-style: italic;
+}
+.todo-list-main .header input::-ms-input-placeholder { /* Microsoft Edge */
+  font-style: italic;
+}

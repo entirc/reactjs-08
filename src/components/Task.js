@@ -2,23 +2,16 @@ import React, { Component } from 'react'
 import './Task.css'
 
 class Task extends Component {
-  constructor(props) {
-    super(props)
-    this.toggleTaskState = this.toggleTaskState.bind(this)
-    this.deleteTask = this.deleteTask.bind(this)
-    this.updateTaskDescription = this.updateTaskDescription.bind(this)
-  }
-
-  toggleTaskState(event) {
+  toggleTaskState = event => {
     event.preventDefault()
     this.props.toggleTaskState(this.props.index, this.props.task)
   }
 
-  deleteTask() {
-    this.props.deleteTask(this.props.index)    
+  deleteTask = () => {
+    this.props.deleteTask(this.props.index)
   }
 
-  updateTaskDescription() {
+  updateTaskDescription = () => {
     const text = prompt('Update the task description', this.props.task.description)
     if (text != undefined) {
       if (text.length > 0) {
@@ -35,7 +28,7 @@ class Task extends Component {
     return (
       <div className='task'>
         <span className={classes.join(' ')}>
-          <a 
+          <a
             href="#"
             onClick={this.toggleTaskState}>
             {task.description}

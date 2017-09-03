@@ -1,9 +1,0 @@
-.todo-list-main .todo-list-items {
-  text-align: left;
-  list-style: none;
-}
-
-ul.todo-list-items > li {
-  cursor: move;
-  cursor: -webkit-grabbing;
-}
